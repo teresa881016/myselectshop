@@ -46,6 +46,7 @@ public class ProductService {
         return new ProductResponseDto(product);
     }
 
+    @Transactional(readOnly = true)
     public Page<ProductResponseDto> getProduct(User user, int page, int size, String sortBy, boolean isAsc) {
         // 페이지 오름차순 내림차순
         Sort.Direction direction = isAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
@@ -55,7 +56,7 @@ public class ProductService {
         UserRoleEnum userRoleEnum = user.getRole();
 
         Page<Product> productList;
-        if(userRoleEnum.equals(UserRoleEnum.USER)){
+        if(userRoleEnum == UserRoleEnum.USER){
             productList = productRepository.findAllByUser(user, pageable);
         } else{
 
